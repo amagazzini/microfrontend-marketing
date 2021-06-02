@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, Router } from 'react-router-dom';
-import { StylesProvider, createGenerateClassName } from '@material-ui/core/styles';
 
-import Landing from './components/Landing';
-import Pricing from './components/Pricing';
+import BillingPage from './components/BillingPage/BillingPage';
+import SubscriptionPage from './components/SubscriptionPage/SubscriptionPage';
 
-const generateClassName = createGenerateClassName({
-  productionPrefix: 'ma',
-})
+// style
+import colors from './styles/colors';
+
 
 export default ({ history }) => {
-  return <div>
-    <StylesProvider generateClassName={generateClassName}>
+  useEffect(() => {
+    document.body.style.backgroundColor = colors.primaryBlue;
+  })
+
+  return (
+    <div>
       <Router history={history}>
         <Switch>
-          <Route exact path="/pricing" component={Pricing} />
-          <Route path="/" component={Landing} />
+          <Route path="/subscriptions/billing" component={BillingPage} />
+          <Route path="/subscriptions" component={SubscriptionPage} />
         </Switch>
       </Router>
-    </StylesProvider>
-  </div>
+    </div>
+  )
 }

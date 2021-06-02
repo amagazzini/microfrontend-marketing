@@ -1,6 +1,8 @@
+const webpack = require('webpack')
 const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
+const Dotenv = require('dotenv-webpack');
 const commonConfig = require('./webpack.common');
 const packageJson = require('../package.json')
 
@@ -18,13 +20,20 @@ const devConfig = {
       template: './public/index.html'
     }),
     new ModuleFederationPlugin({
-      name: 'marketing',
+      name: 'subscriptions',
       filename: 'remoteEntry.js',
       exposes: {
-        './MarketingApp': './src/bootstrap'
+        './SubscriptionsApp': './src/bootstrap'
       },
       shared: packageJson.dependencies,
-    })
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
+    new Dotenv({
+      path: './.env', // Path to .env file (this is the default)
+      safe: true, // load .env.example (defaults to "false" which does not use dotenv-safe)
+    }),
   ]
 };
 
